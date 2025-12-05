@@ -49,14 +49,6 @@ Klinik is a medical practice management system that allows healthcare facilities
 - **Maui.Klinik** - Cross-platform GUI application
 - **WebAPI.Klinik** - RESTful API server
 
-## Course Requirements Met
-
-**Assignment 1** - Console application with business logic  
-**Assignment 2** - MAUI application with full CRUD and navigation  
-**Assignment 3** - Advanced UI features (sorting, inline buttons, room management, color coding)  
-**Assignment 4** - RESTful Web API with client integration  
-**Honors Features** - All 4 features completed
-
 ## Running the Application
 
 ### MAUI Application
@@ -80,7 +72,7 @@ dotnet run
 
 ## Author
 
-Ian Spence  
+Ian Spence
 Florida State University
 COP4870
 Fall 2025
