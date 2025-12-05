@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:Maui.Klinik.ViewModels"
+             xmlns:models="clr-namespace:Library.Klinik.Models;assembly=Library.Klinik"
+             x:Class="Maui.Klinik.Views.PhysicianListPage"
+             x:DataType="viewmodels:PhysicianListViewModel"
+             Title="Physicians">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Add" Command="{Binding AddPhysicianCommand}"/>
+        <ToolbarItem Text="Refresh" Command="{Binding RefreshCommand}"/>
+    </ContentPage.ToolbarItems>
+
+    <Grid RowDefinitions="Auto,Auto,*" Padding="10">
+        <!-- Search Bar -->
+        <SearchBar Grid.Row="0"
+                   Placeholder="Search physicians..."
+                   Text="{Binding SearchText}"/>
+
+        <!-- Sort Controls -->
+        <Grid Grid.Row="1" ColumnDefinitions="*,Auto" Margin="0,5">
+            <Picker Grid.Column="0"
+                    Title="Sort by"
+                    SelectedItem="{Binding SortProperty}">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>FirstName</x:String>
+                        <x:String>LastName</x:String>
+                        <x:String>GraduationDate</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+
+            <Button Grid.Column="1"
+                    Text="{Binding SortAscending, Converter={StaticResource BoolToSortTextConverter}}"
+                    Command="{Binding ToggleSortDirectionCommand}"
+                    WidthRequest="80"/>
+        </Grid>
+
+        <!-- Physicians List -->
+        <CollectionView Grid.Row="2"
+                        ItemsSource="{Binding FilteredPhysicians}"
+                        SelectionMode="None">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Physician">
+                    <SwipeView>
+                        <SwipeView.RightItems>
+                            <SwipeItems>
+                                <SwipeItem Text="Delete"
+                                          BackgroundColor="Red"
+                                          Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:PhysicianListViewModel}}, Path=DeletePhysicianCommand}"
+                                          CommandParameter="{Binding .}"/>
+                            </SwipeItems>
+                        </SwipeView.RightItems>
+
+                        <Frame Margin="5" Padding="10" HasShadow="True">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:PhysicianListViewModel}}, Path=EditPhysicianCommand}"
+                                    CommandParameter="{Binding .}"/>
+                            </Frame.GestureRecognizers>
+
+                            <Grid ColumnDefinitions="*,Auto,Auto" RowDefinitions="Auto,Auto,Auto">
+                                <Label Grid.Row="0" Grid.Column="0"
+                                       Text="{Binding FullName}"
+                                       FontSize="18"
+                                       FontAttributes="Bold"/>
+
+                                <Label Grid.Row="1" Grid.Column="0"
+                                       Text="{Binding LicenseNumber, StringFormat='License: {0}'}"
+                                       FontSize="14"
+                                       TextColor="Gray"/>
+
+                                <Label Grid.Row="2" Grid.Column="0"
+                                       Text="{Binding GraduationDate, StringFormat='Graduated: {0:MMM yyyy}'}"
+                                       FontSize="14"
+                                       TextColor="Gray"/>
+
+                                <Button Grid.Row="0" Grid.Column="1" Grid.RowSpan="3"
+                                        Text="Edit"
+                                        VerticalOptions="Center"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:PhysicianListViewModel}}, Path=EditPhysicianCommand}"
+                                        CommandParameter="{Binding .}"
+                                        Margin="5,0,0,0"/>
+
+                                <Button Grid.Row="0" Grid.Column="2" Grid.RowSpan="3"
+                                        Text="Delete"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:PhysicianListViewModel}}, Path=DeletePhysicianCommand}"
+                                        CommandParameter="{Binding .}"
+                                        BackgroundColor="Red"
+                                        TextColor="White"
+                                        VerticalOptions="Center"
+                                        Margin="5,0,0,0"/>
+                            </Grid>
+                        </Frame>
+                    </SwipeView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+
+            <CollectionView.EmptyView>
+                <StackLayout Padding="20" VerticalOptions="Center">
+                    <Label Text="No physicians found"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           HorizontalTextAlignment="Center"
+                           TextColor="Gray"/>
+                    <Label Text="Add a physician or adjust your search criteria"
+                           FontSize="14"
+                           HorizontalTextAlignment="Center"
+                           TextColor="Gray"
+                           Margin="0,10,0,0"/>
+                </StackLayout>
+            </CollectionView.EmptyView>
+        </CollectionView>
+    </Grid>
+</ContentPage>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="Maui.Klinik.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:Maui.Klinik"
+    xmlns:views="clr-namespace:Maui.Klinik.Views"
+    Title="Klinik Medical Charting">
+
+    <TabBar>
+        <Tab Title="Patients" Icon="person.png">
+            <ShellContent
+                ContentTemplate="{DataTemplate views:PatientListPage}"
+                Route="patientlist" />
+        </Tab>
+
+        <Tab Title="Physicians" Icon="stethoscope.png">
+            <ShellContent
+                ContentTemplate="{DataTemplate views:PhysicianListPage}"
+                Route="physicianlist" />
+        </Tab>
+
+        <Tab Title="Appointments" Icon="calendar.png">
+            <ShellContent
+                ContentTemplate="{DataTemplate views:AppointmentListPage}"
+                Route="appointmentlist" />
+        </Tab>
+    </TabBar>
+
+</Shell>

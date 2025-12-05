@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Maui.Klinik.Views.AppointmentDetailPage"
+             Title="{Binding PageTitle}">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+            
+            <Label Text="Patient" FontAttributes="Bold"/>
+            <Picker ItemsSource="{Binding Patients}"
+                    SelectedItem="{Binding SelectedPatient}"
+                    ItemDisplayBinding="{Binding FullName}"
+                    Title="Select a patient"/>
+
+            <Label Text="Physician" FontAttributes="Bold"/>
+            <Picker ItemsSource="{Binding Physicians}"
+                    SelectedItem="{Binding SelectedPhysician}"
+                    ItemDisplayBinding="{Binding FullName}"
+                    Title="Select a physician"/>
+
+            <Label Text="Appointment Date" FontAttributes="Bold"/>
+            <DatePicker Date="{Binding AppointmentDate}"
+                        MinimumDate="01/01/2020"
+                        MaximumDate="12/31/2030"/>
+
+            <Label Text="Appointment Time" FontAttributes="Bold"/>
+            <TimePicker Time="{Binding AppointmentTime}"/>
+
+            <Label Text="Room" FontAttributes="Bold"/>
+            <Entry Text="{Binding Room}" Placeholder="e.g., Room 101"/>
+
+            <Label Text="Reason" FontAttributes="Bold"/>
+            <Entry Text="{Binding Reason}" Placeholder="e.g., General Visit"/>
+
+            <Label Text="Note: Appointments are only available 8:00 AM - 5:00 PM, Monday-Friday"
+                   FontSize="12"
+                   TextColor="Gray"
+                   Margin="0,0,0,10"/>
+
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="10" Margin="0,20,0,0">
+                <Button Grid.Column="0"
+                        Text="Save"
+                        Command="{Binding SaveCommand}"
+                        BackgroundColor="{StaticResource Primary}"/>
+                        
+                <Button Grid.Column="1"
+                        Text="Cancel"
+                        Command="{Binding CancelCommand}"
+                        BackgroundColor="Gray"/>
+            </Grid>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

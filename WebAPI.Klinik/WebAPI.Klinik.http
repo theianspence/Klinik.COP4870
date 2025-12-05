@@ -1,0 +1,39 @@
+@WebAPI.Klinik_HostAddress = http://localhost:5149
+
+### Get All Patients
+GET {{WebAPI.Klinik_HostAddress}}/api/patients
+
+### Get Patient by ID
+GET {{WebAPI.Klinik_HostAddress}}/api/patients/1
+
+### Create Patient
+POST {{WebAPI.Klinik_HostAddress}}/api/patients
+Content-Type: application/json
+
+{
+  "firstName": "John",
+  "lastName": "Doe",
+  "address": "123 Main Street",
+  "dateOfBirth": "1990-05-15",
+  "race": "Caucasian",
+  "gender": "Male"
+}
+
+### Update Patient
+PUT {{WebAPI.Klinik_HostAddress}}/api/patients/1
+Content-Type: application/json
+
+{
+  "firstName": "John",
+  "lastName": "Smith",
+  "address": "456 Oak Avenue",
+  "dateOfBirth": "1990-05-15",
+  "race": "Caucasian",
+  "gender": "Male"
+}
+
+### Delete Patient
+DELETE {{WebAPI.Klinik_HostAddress}}/api/patients/1
+
+### Search Patients
+GET {{WebAPI.Klinik_HostAddress}}/api/patients/search?query=john
