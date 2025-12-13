@@ -26,8 +26,18 @@ builder.Services.AddCors(options =>
     });
 });
 
-// Register services as singletons
-builder.Services.AddSingleton<PatientService>();
+// Register services as singletons. If a MySQL connection string is provided in configuration
+// (ConnectionStrings:MySql) we will construct PatientService with that string so it persists
+// patients to the database. Otherwise it falls back to the in-memory behavior.
+var mySqlConn = builder.Configuration.GetConnectionString("MySql");
+if (!string.IsNullOrWhiteSpace(mySqlConn))
+{
+    builder.Services.AddSingleton<PatientService>(_ => new PatientService(mySqlConn));
+}
+else
+{
+    builder.Services.AddSingleton<PatientService>();
+}
 
 var app = builder.Build();
 
