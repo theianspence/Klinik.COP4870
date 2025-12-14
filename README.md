@@ -1,3 +1,5 @@
+[Project Video](https://youtu.be/i_Ap7ule9po)
+
 # Klinik - Medical Practice Management System
 
 A clinic scheduling and management application developed for COP4870 with Professor Chris Mills, Fall 2025.
