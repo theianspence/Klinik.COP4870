@@ -3,6 +3,7 @@ using Library.Klinik.Services;
 using Maui.Klinik.Services;
 using Maui.Klinik.ViewModels;
 using Maui.Klinik.Views;
+using System.Threading.Tasks;
 
 namespace Maui.Klinik;
 
@@ -23,13 +24,39 @@ public static class MauiProgram
 		builder.Logging.AddDebug();
 #endif
 
-		// Register Services
-		builder.Services.AddSingleton<PatientService>();
+		// Register API Services first (optional - comment out to use local services only)
+		builder.Services.AddSingleton<PatientApiService>(sp => new PatientApiService("localhost", 5149));
+
+		// Register Services. PatientService will be pre-populated from the API if available.
+		// Preload is done in a background task so app startup doesn't block if the API is unavailable.
+		builder.Services.AddSingleton<PatientService>(sp =>
+		{
+			var svc = new PatientService();
+			var api = sp.GetService<PatientApiService>();
+			if (api != null)
+			{
+				// Run preload on a background thread to avoid blocking the UI/startup thread.
+				Task.Run(async () =>
+				{
+					try
+					{
+						var dtos = await api.GetAllPatientsAsync().ConfigureAwait(false);
+						foreach (var dto in dtos)
+						{
+							var model = PatientApiService.ToModel(dto);
+							svc.AddPatient(model);
+						}
+					}
+					catch
+					{
+						// ignore preload errors and leave PatientService empty (local mode)
+					}
+				});
+			}
+			return svc;
+		});
 		builder.Services.AddSingleton<PhysicianService>();
 		builder.Services.AddSingleton<AppointmentService>();
-		
-		// Register API Services (optional - comment out to use local services only)
-		builder.Services.AddSingleton<PatientApiService>(sp => new PatientApiService("localhost", 5149));
 
 		// Register ViewModels
 		builder.Services.AddTransient<PatientListViewModel>();
